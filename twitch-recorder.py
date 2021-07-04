@@ -9,9 +9,13 @@ import shutil
 import time
 
 import requests
+import rclone
 
 import config
 
+cfg = """[local]
+type = local
+nounc = true"""
 
 class TwitchResponseStatus(enum.Enum):
     ONLINE = 0
@@ -85,9 +89,11 @@ class TwitchRecorder:
         if self.disable_ffmpeg:
             logging.info("moving: %s", recorded_filename)
             shutil.move(recorded_filename, processed_filename)
+            rclone.with_config(cfg).run_cmd(command="move", extra_args=[processed_filename, "remote:/TwitchIncoming", "-v"])
         else:
             logging.info("fixing %s", recorded_filename)
             self.ffmpeg_copy_and_fix_errors(recorded_filename, processed_filename)
+            rclone.with_config(cfg).run_cmd(command="move", extra_args=[processed_filename, "remote:/TwitchIncoming", "-v"])
 
     def ffmpeg_copy_and_fix_errors(self, recorded_filename, processed_filename):
         try:
