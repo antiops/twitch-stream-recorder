@@ -1,0 +1,2 @@
+python_rclone==0.0.2
+requests==2.22.0
