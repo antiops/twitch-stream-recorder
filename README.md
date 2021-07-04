@@ -1,11 +1,13 @@
 # Ancalentari Twitch Stream Recorder
-This script allows you to record twitch streams live to .mp4 files.  
+This script allows you to record twitch streams live to .mp4 files and automatically upload the VOD to the cloud using rclone.
+
 It is an improved version of [junian's twitch-recorder](https://gist.github.com/junian/b41dd8e544bf0e3980c971b0d015f5f6), migrated to [**helix**](https://dev.twitch.tv/docs/api) - the new twitch API. It uses OAuth2.
 ## Requirements
 1. [python3.8](https://www.python.org/downloads/release/python-380/) or higher  
 2. [streamlink](https://streamlink.github.io/)  
 3. [ffmpeg](https://ffmpeg.org/)
-4. [python-rclone](https://github.com/ddragosd/python-rclone)
+4. [rclone](https://rclone.org/downloads/)
+5. [python-rclone](https://github.com/ddragosd/python-rclone)
 
 ## Setting up
 1) Check if you have latest version of streamlink:
@@ -13,9 +15,10 @@ It is an improved version of [junian's twitch-recorder](https://gist.github.com/
     * `streamlink --version-check` shows available upgrade
     * `sudo pip install --upgrade streamlink` do upgrade
 
-2) Install `requests` module [if you don't have it](https://pypi.org/project/requests/)  
-   * Windows:    ```python -m pip install requests```  
-   * Linux:      ```python3.8 -m pip install requests```
+2) Install `requests` & `python-rclone` modules if you don't have them 
+   * Windows:    ```python -m pip install requests python-rclone```  
+   * Linux:      ```python3.8 -m pip install requests python-rclone```
+
 3) Create `config.py` file in the same directory as `twitch-recorder.py` with:
 ```properties
 root_path = "/home/abathur/Videos/twitch"
@@ -28,17 +31,18 @@ client_secret = "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
 `client_id` - you can grab this from [here](https://dev.twitch.tv/console/apps) once you register your application  
 `client_secret` - you generate this [here](https://dev.twitch.tv/console/apps) as well, for your registered application
 
-4) Edit `twitch-recorder.py` and add the rclone config ($HOME/.config/rclone/rclone.conf) of whatever remote you want to push to.
-Example: **Leave the remote name as [remote]**
-```yaml
-cfg = """
+4) Install and create an rclone remote (`rclone config`) if you dont have one already then edit `twitch-recorder.py` and add the following:
+    * The rclone config `(cat $HOME/.config/rclone/rclone.conf)` of whatever remote you want to push to
+    * The remote path to `rcloneRemotePath`
+Example:
+```python
+rcloneConfig = """
 [remote]
 type = drive
 scope = drive
 token = {"access_token":".......".....}
 """
-
-
+rcloneRemotePath = "remote:TwitchVODs/"
 ```
 
 ## Running script
