@@ -13,12 +13,13 @@ import rclone
 
 import config
 
-cfg = """
+rcloneConfig = """
 [remote]
 type = REPLACE
 scope = ALL
 token = THIS
 """
+rcloneRemotePath = "remote:TwitchVODS/"
 
 class TwitchResponseStatus(enum.Enum):
     ONLINE = 0
@@ -33,7 +34,7 @@ class TwitchRecorder:
         # global configuration
         self.ffmpeg_path = "ffmpeg"
         self.disable_ffmpeg = False
-        self.refresh = 15
+        self.refresh = 60
         self.root_path = config.root_path
 
         # user configuration
@@ -92,11 +93,11 @@ class TwitchRecorder:
         if self.disable_ffmpeg:
             logging.info("moving: %s", recorded_filename)
             shutil.move(recorded_filename, processed_filename)
-            rclone.with_config(cfg).run_cmd(command="move", extra_args=[processed_filename, "remote:/TwitchIncoming", "-v"])
+            rclone.with_config(rcloneConfig).run_cmd(command="move", extra_args=[processed_filename, rcloneRemotePath, "-v"])
         else:
             logging.info("fixing %s", recorded_filename)
             self.ffmpeg_copy_and_fix_errors(recorded_filename, processed_filename)
-            rclone.with_config(cfg).run_cmd(command="move", extra_args=[processed_filename, "remote:/TwitchIncoming", "-v"])
+            rclone.with_config(rcloneConfig).run_cmd(command="move", extra_args=[processed_filename, rcloneRemotePath, "-v"])
 
     def ffmpeg_copy_and_fix_errors(self, recorded_filename, processed_filename):
         try:
@@ -148,8 +149,11 @@ class TwitchRecorder:
 
                 channels = info["data"]
                 channel = next(iter(channels), None)
-                filename = self.username + " - " + datetime.datetime.now() \
-                    .strftime("%Y-%m-%d %Hh%Mm%Ss") + " - " + channel.get("title") + ".mp4"
+                #filename = self.username + " - " + datetime.datetime.now() \
+                #    .strftime("%Y-%m-%d %Hh%Mm%Ss") + " - " + channel.get("title") + ".mp4"
+
+                # ExampleTV_v52532812588_20210701_0333752.mp4
+                filename = channel.get("user_name") + "_v" + channel.get("id") + "_" + datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + ".mp4"
 
                 # clean filename from unnecessary characters
                 filename = "".join(x for x in filename if x.isalnum() or x in [" ", "-", "_", "."])
@@ -159,7 +163,7 @@ class TwitchRecorder:
 
                 # start streamlink process
                 subprocess.call(
-                    ["streamlink", "--twitch-disable-ads", "twitch.tv/" + self.username, self.quality,
+                    ["streamlink", "--twitch-disable-ads", "--twitch-disable-hosting", "twitch.tv/" + self.username, self.quality,
                      "-o", recorded_filename])
 
                 logging.info("recording stream is done, processing video file")
