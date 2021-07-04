@@ -16,8 +16,8 @@ It is an improved version of [junian's twitch-recorder](https://gist.github.com/
     * `sudo pip install --upgrade streamlink` do upgrade
 
 2) Install `requests` & `python-rclone` modules if you don't have them 
-   * Windows:    ```python -m pip install requests python-rclone```  
-   * Linux:      ```python3.8 -m pip install requests python-rclone```
+   * Windows:    ```python -m pip install -r requirements.txt```  
+   * Linux:      ```pip3 install -r requirements.txt```
 
 3) Create `config.py` file in the same directory as `twitch-recorder.py` with:
 ```properties
