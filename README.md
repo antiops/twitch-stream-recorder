@@ -5,6 +5,7 @@ It is an improved version of [junian's twitch-recorder](https://gist.github.com/
 1. [python3.8](https://www.python.org/downloads/release/python-380/) or higher  
 2. [streamlink](https://streamlink.github.io/)  
 3. [ffmpeg](https://ffmpeg.org/)
+4. [python-rclone](https://github.com/ddragosd/python-rclone)
 
 ## Setting up
 1) Check if you have latest version of streamlink:
@@ -26,6 +27,8 @@ client_secret = "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
 `username` - name of the streamer you want to record by default  
 `client_id` - you can grab this from [here](https://dev.twitch.tv/console/apps) once you register your application  
 `client_secret` - you generate this [here](https://dev.twitch.tv/console/apps) as well, for your registered application
+
+4) Edit `twitch-recorder.py` and add the rclone config ($HOME/.config/rclone/rclone.conf) of whatever remote you want to push to. **Leave the remote name as [Remote]**
 
 ## Running script
 The script will be logging to a console and to a file `twitch-recorder.log`
