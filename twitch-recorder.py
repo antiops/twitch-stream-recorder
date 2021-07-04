@@ -13,9 +13,12 @@ import rclone
 
 import config
 
-cfg = """[local]
-type = local
-nounc = true"""
+cfg = """
+[remote]
+type = REPLACE
+scope = ALL
+token = THIS
+"""
 
 class TwitchResponseStatus(enum.Enum):
     ONLINE = 0
