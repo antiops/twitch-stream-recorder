@@ -28,7 +28,18 @@ client_secret = "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
 `client_id` - you can grab this from [here](https://dev.twitch.tv/console/apps) once you register your application  
 `client_secret` - you generate this [here](https://dev.twitch.tv/console/apps) as well, for your registered application
 
-4) Edit `twitch-recorder.py` and add the rclone config ($HOME/.config/rclone/rclone.conf) of whatever remote you want to push to. **Leave the remote name as [Remote]**
+4) Edit `twitch-recorder.py` and add the rclone config ($HOME/.config/rclone/rclone.conf) of whatever remote you want to push to.
+Example: **Leave the remote name as [remote]**
+```yaml
+cfg = """
+[remote]
+type = drive
+scope = drive
+token = {"access_token":".......".....}
+"""
+
+
+```
 
 ## Running script
 The script will be logging to a console and to a file `twitch-recorder.log`
