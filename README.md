@@ -31,9 +31,10 @@ client_secret = "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
 `client_id` - you can grab this from [here](https://dev.twitch.tv/console/apps) once you register your application  
 `client_secret` - you generate this [here](https://dev.twitch.tv/console/apps) as well, for your registered application
 
-4) Install and create an rclone remote (`rclone config`) if you dont have one already then edit `twitch-recorder.py` and add the following:
+4) Install and create a rclone remote (`rclone config`) if you dont have one already then edit `twitch-recorder.py` and add the following:
     * The rclone config `(cat $HOME/.config/rclone/rclone.conf)` of whatever remote you want to push to
     * The remote path to `rcloneRemotePath`
+
 Example:
 ```python
 rcloneConfig = """
