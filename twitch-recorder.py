@@ -152,8 +152,8 @@ class TwitchRecorder:
                 #filename = self.username + " - " + datetime.datetime.now() \
                 #    .strftime("%Y-%m-%d %Hh%Mm%Ss") + " - " + channel.get("title") + ".mp4"
 
-                # ExampleTV_v52532812588_20210701_0333752.mp4
-                filename = channel.get("user_name") + "_v" + channel.get("id") + "_" + datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + ".mp4"
+                # ExampleTV_20210701_0333752_v52532812588.mp4
+                filename = channel.get("user_name") + "_" + datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + "_v" + channel.get("id") + ".mp4"
 
                 # clean filename from unnecessary characters
                 filename = "".join(x for x in filename if x.isalnum() or x in [" ", "-", "_", "."])
